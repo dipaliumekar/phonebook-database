@@ -1,0 +1,178 @@
+// Online C compiler to run C program online
+#include<stdlib.h>
+#include<string.h>
+#include<stdio.h>
+struct ph
+{
+    int id;
+    char name[100];
+    char phone[100];
+    struct ph *next;
+};
+
+struct ph* insert(struct ph*head,int id,char name[100], char phone[100])
+{
+    
+    struct ph* ph= (struct ph *) malloc(sizeof(struct ph));
+    
+    strcpy(ph->name, name);
+    strcpy(ph->phone, phone);
+    ph->id=id;
+
+
+    ph->next = NULL;
+    
+    if(head==NULL)
+    {
+        head = ph;
+    }
+    else 
+    {
+        ph->next = head;
+        head = ph;
+    }
+    
+    return head;
+    
+}
+
+
+void search(struct ph *head, int id)
+{
+    struct ph* temp = head;
+    while(temp!=NULL)
+    {
+        if(temp->id==id)
+        {
+            printf("ID = %d\n", temp->id);
+            printf("Name = %s\n", temp->name);
+            printf("Phone =  %s\n", temp->phone);
+          
+            return;
+        }
+        temp = temp->next;
+    }
+    printf("ID %d is not found \n",id);
+}
+
+void update(struct ph *head, int id)
+{
+    
+    struct ph * temp = head;
+    while(temp!=NULL)
+{
+        
+        if(temp->id==id){
+            printf("ID %d Found\n", id);
+            printf("Enter name =  ");
+            scanf("%s", temp->name);
+            printf("Enter phone =  ");
+            scanf("%s", temp->phone);
+            
+            return;
+        }
+        temp = temp->next;
+        
+    }
+    printf("ID %d is not found !!!\n", id);
+    
+}
+struct ph * Delete(struct ph *head, int id)
+{
+    struct ph * temp1 = head;
+    struct ph* temp2 = head; 
+  
+    while(temp1!=NULL)
+    {
+        
+        if(temp1->id==id){
+            
+            
+            if(temp1==temp2) 
+            {
+              
+                head = head->next;
+                free(temp1);
+            }
+            else{
+              
+                temp2->next = temp1->next;
+                free(temp1); 
+            }
+            
+            return head;
+            
+        }
+        temp2 = temp1;
+        temp1 = temp1->next;
+        
+    }
+    
+    return head;
+    
+}
+
+void display(struct ph *head)
+{
+    struct ph * temp = head;
+    while(temp!=NULL){
+        
+        printf("ID = %d\n", temp->id);
+        printf("Name = %s\n", temp->name);
+        printf("Phone = %s\n", temp->phone);
+        
+        temp = temp->next;
+        
+    }
+}
+int main()
+{
+    struct ph *head = NULL;
+    int choice;
+    char name[100];
+    char phone[100];
+    int id;
+    
+    printf("1.insert details\n2.search \n3.delete\n4.update\n5.display\n6.exit");
+    do
+    {
+        printf("\nEnter Choice = ");
+        scanf("%d", &choice);
+        switch (choice)
+        {
+            case 1:
+                printf("Enter ID =  ");
+                scanf("%d", &id);
+                printf("Enter name =  ");
+                scanf("%s", name);
+                printf("Enter phone number =  ");
+                scanf("%s", phone);
+                
+                head = insert(head,id, name, phone);
+                break;
+            case 2:
+                printf("Enter ID to search =  ");
+                scanf("%d", &id);
+                search(head,id);
+                break;
+            case 3:
+                printf("Enter ID to delete: ");
+                scanf("%d", &id);
+                head = Delete(head,id);
+                break;
+            case 4:
+                printf("Enter ID to update =  ");
+                scanf("%d", &id);
+                update(head, id);
+                break;
+            case 5:
+                display(head);
+                break;
+            case 6:
+                exit(0);
+                break;
+        }
+        
+        
+    } while (choice != 0);
+}
